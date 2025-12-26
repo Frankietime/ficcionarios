@@ -56,17 +56,34 @@ Aplicación de escritorio para crear diccionarios personalizados de Kindle de ma
 
 #### Para macOS (.app)
 
-1. Instalar PyInstaller:
+**IMPORTANTE**: Este proceso debe ejecutarse en una computadora con macOS. No puedes generar un `.app` desde Windows.
+
+1. En tu Mac, abre Terminal y navega al directorio del proyecto
+
+2. Instalar PyInstaller:
    ```bash
-   pip install pyinstaller
+   pip3 install pyinstaller
    ```
 
-2. Generar la aplicación:
+3. Generar la aplicación usando el script:
+   ```bash
+   chmod +x build_mac.sh
+   ./build_mac.sh
+   ```
+   
+   O manualmente:
    ```bash
    pyinstaller --onefile --windowed --name "GeneradorDiccionariosKindle" --icon=NONE main.py
    ```
 
    El archivo `.app` estará en la carpeta `dist/`
+
+4. (Opcional) Firmar la aplicación para evitar advertencias de seguridad:
+   ```bash
+   codesign --force --deep --sign - dist/GeneradorDiccionariosKindle.app
+   ```
+
+   Nota: Si no firmas la aplicación, macOS puede mostrar una advertencia al ejecutarla. Puedes permitir la ejecución desde Preferencias del Sistema > Seguridad y Privacidad.
 
 #### Para Linux
 
@@ -90,36 +107,41 @@ Aplicación de escritorio para crear diccionarios personalizados de Kindle de ma
 6. **Imagen de portada** (opcional): Selecciona una imagen JPG o PNG
 7. **Texto de Copyright** (opcional): Información de copyright
 8. **Texto de Uso** (opcional): Instrucciones para usar el diccionario
-9. **Definiciones**: Ingresa las palabras y definiciones en formato:
-   ```
-   palabra1 definición completa de la palabra 1
-   palabra2 definición completa de la palabra 2
-   ```
-   - Una palabra y definición por línea
-   - Separadas por un espacio
-   - Puedes cargar desde un archivo .txt usando el botón "Cargar desde archivo .txt"
+9. **Grupos de Definiciones**: 
+   - Haz clic en el botón **"+ Agregar Grupo"** para crear un nuevo grupo
+   - En cada grupo:
+     - **Palabras**: Ingresa una o varias palabras separadas por coma (ej: "luna, lunar, lunático")
+     - **Definición**: Ingresa el texto completo de la definición (puede ser tan largo como un cuento)
+     - **Cargar desde archivo**: Puedes cargar el texto de la definición desde un archivo .txt
+   - Cada palabra del grupo se convertirá en una entrada separada en el diccionario, pero todas compartirán la misma definición
+   - Puedes agregar tantos grupos como necesites
+   - Usa el botón "Eliminar grupo" para remover un grupo
 10. **Estilos CSS personalizados** (opcional): Agrega estilos CSS adicionales
 11. **Generar Diccionario**: Haz clic para generar todos los archivos
 
-## Formato de Definiciones
+## Formato de Grupos de Definiciones
 
-El formato esperado es:
-```
-palabra definición completa
-otra_palabra otra definición
-```
+Cada grupo de definiciones permite:
 
-Cada línea debe tener:
-- La palabra (primera palabra de la línea)
-- Un espacio
-- La definición (resto de la línea)
+- **Múltiples palabras por definición**: Puedes ingresar varias palabras separadas por coma que compartirán la misma definición
+  - Ejemplo: `luna, lunar, lunático, lunático`
+  - Cada palabra se convertirá en una entrada separada en el diccionario
 
-Ejemplo:
-```
-espacio La luna por veinte dolares, por Hernan Casciari
-luna La luna por veinte dolares, por Hernan Casciari
-historia La luna por veinte dolares, por Hernan Casciari
-```
+- **Definiciones largas**: El texto de la definición puede ser tan extenso como un cuento completo
+  - Puedes escribir directamente en el campo de texto
+  - O cargar desde un archivo .txt usando el botón "Cargar desde archivo..."
+
+- **Múltiples grupos**: Puedes agregar tantos grupos como necesites
+  - Cada grupo es independiente
+  - Útil para organizar definiciones por tema o categoría
+
+Ejemplo de uso:
+- **Grupo 1**:
+  - Palabras: `luna, lunar, lunático`
+  - Definición: `[Texto completo del cuento "La luna por veinte dolares"]`
+- **Grupo 2**:
+  - Palabras: `espacio, espacial`
+  - Definición: `[Otro texto largo de definición]`
 
 ## Próximos Pasos Después de Generar
 
@@ -130,7 +152,9 @@ historia La luna por veinte dolares, por Hernan Casciari
 
 ## Notas
 
-- Si no ingresas definiciones, se generarán archivos HTML vacíos como fallback
+- Si no ingresas grupos de definiciones válidos, se generarán archivos HTML vacíos como fallback
+- Cada palabra en un grupo se convierte en una entrada separada en el diccionario
+- Las definiciones pueden ser textos muy largos (como cuentos completos)
 - La imagen de portada debe ser JPG o PNG
 - Todos los archivos se generan en UTF-8
 - Los caracteres HTML especiales se escapan automáticamente

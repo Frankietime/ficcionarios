@@ -45,21 +45,52 @@ def generate_content_html(entries, styles=""):
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <style>
+      body {{
+          margin: 0;
+          padding: 0;
+          font-family: serif;
+      }}
       h5 {{
           font-size: 1em;
           margin: 0;
+          padding: 0;
+          line-height: 1.2;
       }}
       dt {{
           font-weight: bold;
+          margin: 0;
+          padding: 0;
       }}
       dd {{
           margin: 0;
-          padding: 0 0 0.5em 0;
-          display: block
+          padding: 0.3em 0 0.8em 0;
+          display: block;
+          line-height: 1.4;
       }}
       p {{
-          margin: 0.5em 0;
+          margin: 0;
+          padding: 0.15em 0;
           text-align: justify;
+          line-height: 1.5;
+          text-indent: 0;
+      }}
+      p:first-child {{
+          margin-top: 0;
+          padding-top: 0;
+      }}
+      p:last-child {{
+          margin-bottom: 0;
+          padding-bottom: 0;
+      }}
+      hr {{
+          margin: 0.5em 0;
+          padding: 0;
+          border: none;
+          border-top: 1px solid #ccc;
+      }}
+      idx:entry {{
+          margin: 0;
+          padding: 0;
       }}
 {styles}
     </style>
@@ -194,18 +225,22 @@ def generate_dictionary(output_dir, config):
     output_path.mkdir(parents=True, exist_ok=True)
     
     # Generar content.html
-    entries = []
-    if config.get('definitions'):
-        for line in config['definitions'].strip().split('\n'):
-            line = line.strip()
-            if line:
-                parts = line.split(' ', 1)
-                if len(parts) == 2:
-                    word, definition = parts
-                    entries.append((word, definition))
-                elif len(parts) == 1:
-                    # Si solo hay una palabra sin definición, usar texto vacío
-                    entries.append((parts[0], ''))
+    # Si viene 'entries' directamente, usarlo; si no, procesar 'definitions' (compatibilidad)
+    if 'entries' in config:
+        entries = config['entries']
+    else:
+        entries = []
+        if config.get('definitions'):
+            for line in config['definitions'].strip().split('\n'):
+                line = line.strip()
+                if line:
+                    parts = line.split(' ', 1)
+                    if len(parts) == 2:
+                        word, definition = parts
+                        entries.append((word, definition))
+                    elif len(parts) == 1:
+                        # Si solo hay una palabra sin definición, usar texto vacío
+                        entries.append((parts[0], ''))
     
     styles = config.get('custom_styles', '')
     content_html = generate_content_html(entries, styles)

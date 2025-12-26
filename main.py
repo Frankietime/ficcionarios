@@ -7,11 +7,87 @@ from pathlib import Path
 import generator
 
 
+class DefinitionGroup:
+    """Representa un grupo de definiciones"""
+    def __init__(self, parent_frame, on_remove_callback):
+        self.frame = ttk.LabelFrame(parent_frame, text="Grupo de Definiciones", padding="5")
+        self.on_remove_callback = on_remove_callback
+        self.definition_text_widget = None
+        self.words_entry = None
+        self.create_widgets()
+    
+    def create_widgets(self):
+        """Crea los widgets del grupo"""
+        row = 0
+        
+        # Palabras
+        words_frame = ttk.Frame(self.frame)
+        words_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
+        ttk.Label(words_frame, text="Palabras (separadas por coma):", font=('Arial', 9, 'bold')).pack(side=tk.LEFT, padx=5)
+        self.words_entry = ttk.Entry(words_frame, width=40)
+        self.words_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        row += 1
+        
+        # Definición
+        ttk.Label(self.frame, text="Definición (texto completo):", font=('Arial', 9, 'bold')).grid(row=row, column=0, columnspan=2, sticky=tk.W, pady=5)
+        row += 1
+        
+        # Botones para cargar archivo
+        buttons_frame = ttk.Frame(self.frame)
+        buttons_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=2)
+        ttk.Button(buttons_frame, text="Cargar desde archivo...", 
+                  command=self.load_definition_file, width=20).pack(side=tk.LEFT, padx=2)
+        ttk.Button(buttons_frame, text="Eliminar grupo", 
+                  command=self.remove_group, width=15).pack(side=tk.LEFT, padx=2)
+        row += 1
+        
+        # Texto de definición
+        self.definition_text_widget = scrolledtext.ScrolledText(self.frame, height=8, width=60, wrap=tk.WORD)
+        self.definition_text_widget.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=5)
+        self.frame.columnconfigure(0, weight=1)
+        self.frame.rowconfigure(row, weight=1)
+    
+    def load_definition_file(self):
+        """Carga el texto de definición desde un archivo"""
+        filename = filedialog.askopenfilename(
+            title="Cargar texto de definición",
+            filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")]
+        )
+        if filename:
+            try:
+                with open(filename, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                self.definition_text_widget.delete('1.0', tk.END)
+                self.definition_text_widget.insert('1.0', content)
+                messagebox.showinfo("Éxito", f"Texto cargado desde {Path(filename).name}")
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo cargar el archivo:\n{str(e)}")
+    
+    def remove_group(self):
+        """Elimina este grupo"""
+        self.frame.destroy()
+        if self.on_remove_callback:
+            self.on_remove_callback(self)
+    
+    def get_words(self):
+        """Obtiene la lista de palabras"""
+        words_text = self.words_entry.get().strip()
+        if not words_text:
+            return []
+        # Separar por coma y limpiar espacios
+        words = [w.strip() for w in words_text.split(',') if w.strip()]
+        return words
+    
+    def get_definition(self):
+        """Obtiene el texto de la definición"""
+        return self.definition_text_widget.get('1.0', tk.END).strip()
+
+
 class DictionaryGeneratorApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Generador de Diccionarios Kindle")
-        self.root.geometry("800x900")
+        self.root.geometry("900x1000")
         
         # Variables
         self.title_var = tk.StringVar()
@@ -25,15 +101,32 @@ class DictionaryGeneratorApp:
         self.usage_text = tk.StringVar()
         self.custom_styles = tk.StringVar()
         
+        # Lista de grupos de definiciones
+        self.definition_groups = []
+        
         self.create_widgets()
     
     def create_widgets(self):
-        # Frame principal con scroll
-        main_frame = ttk.Frame(self.root, padding="10")
-        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        # Frame principal con canvas para scroll
+        canvas = tk.Canvas(self.root)
+        scrollbar = ttk.Scrollbar(self.root, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
         
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
+        
+        main_frame = scrollable_frame
         main_frame.columnconfigure(1, weight=1)
         
         row = 0
@@ -108,17 +201,14 @@ class DictionaryGeneratorApp:
         ttk.Separator(main_frame, orient='horizontal').grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=10)
         row += 1
         
-        # Definiciones
-        ttk.Label(main_frame, text="Definiciones:", font=('Arial', 10, 'bold')).grid(row=row, column=0, sticky=tk.W, pady=5)
-        ttk.Label(main_frame, text="Formato: palabra definición (una por línea)", 
-                 font=('Arial', 8), foreground='gray').grid(row=row, column=1, sticky=tk.W, pady=5)
-        row += 1
-        
-        definitions_text = scrolledtext.ScrolledText(main_frame, height=10, width=50)
-        definitions_text.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=5)
-        main_frame.rowconfigure(row, weight=1)
-        self.definitions_text = definitions_text
-        row += 1
+        # Definiciones - Título y botón +
+        def_frame = ttk.Frame(main_frame)
+        def_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
+        ttk.Label(def_frame, text="Grupos de Definiciones:", font=('Arial', 10, 'bold')).pack(side=tk.LEFT)
+        ttk.Button(def_frame, text="+ Agregar Grupo", command=self.add_definition_group, width=15).pack(side=tk.LEFT, padx=10)
+        self.definition_groups_frame = ttk.Frame(main_frame)
+        self.definition_groups_frame.grid(row=row+1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
+        row += 2
         
         # Estilos CSS personalizados
         ttk.Label(main_frame, text="Estilos CSS personalizados (opcional):", 
@@ -137,8 +227,6 @@ class DictionaryGeneratorApp:
         
         ttk.Button(button_frame, text="Generar Diccionario", 
                   command=self.generate_dictionary, width=20).pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="Cargar desde archivo .txt", 
-                  command=self.load_definitions_file, width=20).pack(side=tk.LEFT, padx=5)
         ttk.Button(button_frame, text="Salir", 
                   command=self.root.quit, width=20).pack(side=tk.LEFT, padx=5)
     
@@ -148,6 +236,17 @@ class DictionaryGeneratorApp:
             content = text_widget.get('1.0', tk.END).rstrip('\n')
             var.set(content)
     
+    def add_definition_group(self):
+        """Agrega un nuevo grupo de definiciones"""
+        group = DefinitionGroup(self.definition_groups_frame, self.remove_definition_group)
+        group.frame.pack(fill=tk.BOTH, expand=True, pady=5, padx=5)
+        self.definition_groups.append(group)
+    
+    def remove_definition_group(self, group):
+        """Elimina un grupo de definiciones"""
+        if group in self.definition_groups:
+            self.definition_groups.remove(group)
+    
     def browse_cover_image(self):
         """Abre diálogo para seleccionar imagen de portada"""
         filename = filedialog.askopenfilename(
@@ -156,22 +255,6 @@ class DictionaryGeneratorApp:
         )
         if filename:
             self.cover_image_path.set(filename)
-    
-    def load_definitions_file(self):
-        """Carga definiciones desde un archivo de texto"""
-        filename = filedialog.askopenfilename(
-            title="Cargar definiciones",
-            filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")]
-        )
-        if filename:
-            try:
-                with open(filename, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                self.definitions_text.delete('1.0', tk.END)
-                self.definitions_text.insert('1.0', content)
-                messagebox.showinfo("Éxito", f"Definiciones cargadas desde {Path(filename).name}")
-            except Exception as e:
-                messagebox.showerror("Error", f"No se pudo cargar el archivo:\n{str(e)}")
     
     def validate_inputs(self):
         """Valida que todos los campos requeridos estén completos"""
@@ -195,11 +278,18 @@ class DictionaryGeneratorApp:
             messagebox.showerror("Error", "Por favor ingrese el nombre del archivo .opf")
             return False
         
-        definitions = self.definitions_text.get('1.0', tk.END).strip()
-        if not definitions:
+        # Validar que haya al menos un grupo con palabras y definición
+        valid_groups = 0
+        for group in self.definition_groups:
+            words = group.get_words()
+            definition = group.get_definition()
+            if words and definition:
+                valid_groups += 1
+        
+        if valid_groups == 0:
             result = messagebox.askyesno(
                 "Advertencia", 
-                "No se han ingresado definiciones. ¿Desea continuar de todas formas?\n\nSe generarán archivos HTML vacíos como fallback."
+                "No se han ingresado grupos de definiciones válidos. ¿Desea continuar de todas formas?\n\nSe generarán archivos HTML vacíos como fallback."
             )
             if not result:
                 return False
@@ -224,6 +314,16 @@ class DictionaryGeneratorApp:
             copyright_content = self.copyright_text_widget.get('1.0', tk.END).strip()
             usage_content = self.usage_text_widget.get('1.0', tk.END).strip()
             
+            # Procesar grupos de definiciones
+            entries = []
+            for group in self.definition_groups:
+                words = group.get_words()
+                definition = group.get_definition()
+                if words and definition:
+                    # Crear una entrada para cada palabra con la misma definición
+                    for word in words:
+                        entries.append((word, definition))
+            
             # Preparar configuración
             config = {
                 'title': self.title_var.get().strip(),
@@ -235,7 +335,7 @@ class DictionaryGeneratorApp:
                 'cover_image_path': self.cover_image_path.get(),
                 'copyright': copyright_content,
                 'usage': usage_content,
-                'definitions': self.definitions_text.get('1.0', tk.END),
+                'entries': entries,  # Pasar las entradas directamente
                 'custom_styles': self.styles_text.get('1.0', tk.END).strip()
             }
             
@@ -246,7 +346,8 @@ class DictionaryGeneratorApp:
                 "Éxito",
                 f"¡Diccionario generado exitosamente!\n\n"
                 f"Archivo .opf: {opf_filename}\n"
-                f"Ubicación: {output_dir}\n\n"
+                f"Ubicación: {output_dir}\n"
+                f"Total de entradas: {len(entries)}\n\n"
                 f"Próximos pasos:\n"
                 f"1. Abre el archivo .opf con Kindle Previewer\n"
                 f"2. Exporta como .mobi\n"
@@ -265,4 +366,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
