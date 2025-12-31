@@ -1,5 +1,9 @@
+import { Trash2 } from 'lucide-react';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
 import type { DefinitionGroup as DefinitionGroupType } from '../types';
-import './DefinitionGroup.css';
 
 interface DefinitionGroupProps {
   group: DefinitionGroupType;
@@ -11,42 +15,44 @@ interface DefinitionGroupProps {
 
 function DefinitionGroup({ group, index, onChange, onRemove, canRemove }: DefinitionGroupProps) {
   return (
-    <fieldset className="definition-group">
-      <legend>
-        Grupo {index + 1}
+    <div className="rounded-lg border border-border bg-secondary/30 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <span className="text-sm font-medium text-muted-foreground">
+          Group {index + 1}
+        </span>
         {canRemove && (
-          <button
+          <Button
             type="button"
-            className="remove-btn"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
             onClick={() => onRemove(group.id)}
           >
-            Eliminar
-          </button>
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Remove group</span>
+          </Button>
         )}
-      </legend>
-      <div className="form-field">
-        <label>
-          <strong>Palabras (separadas por coma):</strong>
-        </label>
-        <input
-          type="text"
-          value={group.words}
-          onChange={(e) => onChange(group.id, 'words', e.target.value)}
-          placeholder="luna, lunar, lunatico"
-        />
       </div>
-      <div className="form-field">
-        <label>
-          <strong>Definicion:</strong>
-        </label>
-        <textarea
-          value={group.definition}
-          onChange={(e) => onChange(group.id, 'definition', e.target.value)}
-          rows={5}
-          placeholder="Texto de la definicion..."
-        />
+      <div className="space-y-3">
+        <div className="space-y-2">
+          <Label className="text-sm">Words (comma-separated)</Label>
+          <Input
+            value={group.words}
+            onChange={(e) => onChange(group.id, 'words', e.target.value)}
+            placeholder="moon, lunar, moonlit"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label className="text-sm">Definition</Label>
+          <Textarea
+            value={group.definition}
+            onChange={(e) => onChange(group.id, 'definition', e.target.value)}
+            rows={4}
+            placeholder="Enter the definition text..."
+          />
+        </div>
       </div>
-    </fieldset>
+    </div>
   );
 }
 

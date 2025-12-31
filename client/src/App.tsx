@@ -1,8 +1,13 @@
 import { useState, useMemo } from 'react';
 import KindlePreview from './components/KindlePreview';
 import DefinitionGroup from './components/DefinitionGroup';
+import { ThemeToggle } from './components/ThemeToggle';
+import { Button } from './components/ui/button';
+import { Input } from './components/ui/input';
+import { Textarea } from './components/ui/textarea';
+import { Label } from './components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card';
 import type { DictionaryConfig, DictionaryEntry } from './types';
-import './App.css';
 
 function App() {
   const [config, setConfig] = useState<DictionaryConfig>({
@@ -26,7 +31,6 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [nextGroupId, setNextGroupId] = useState(4);
 
-  // Compute preview entries from definition groups
   const previewEntries = useMemo<DictionaryEntry[]>(() => {
     const entries: DictionaryEntry[] = [];
 
@@ -107,7 +111,6 @@ function App() {
         throw new Error(error.error || 'Error generating dictionary');
       }
 
-      // Download the file
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -125,157 +128,186 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <h1>Generador de Diccionarios Kindle</h1>
-
-      <div className="container">
-        <div className="form-panel">
-          <form onSubmit={handleSubmit}>
-            <fieldset>
-              <legend>Informacion Basica</legend>
-
-              <div className="form-field">
-                <label htmlFor="title"><strong>Titulo del diccionario:</strong></label>
-                <input
-                  type="text"
-                  id="title"
-                  value={config.title}
-                  onChange={(e) => updateConfig('title', e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-field">
-                <label htmlFor="creator"><strong>Creador/Autor:</strong></label>
-                <input
-                  type="text"
-                  id="creator"
-                  value={config.creator}
-                  onChange={(e) => updateConfig('creator', e.target.value)}
-                  required
-                />
-              </div>
-
-              <div className="form-field">
-                <label htmlFor="inLanguage">
-                  <strong>Idioma de entrada:</strong>
-                  <span className="hint">(ej: es-es, en-us, pt-br)</span>
-                </label>
-                <input
-                  type="text"
-                  id="inLanguage"
-                  value={config.inLanguage}
-                  onChange={(e) => updateConfig('inLanguage', e.target.value)}
-                />
-              </div>
-
-              <div className="form-field">
-                <label htmlFor="outLanguage">
-                  <strong>Idioma de salida:</strong>
-                  <span className="hint">(ej: es-es, en-us, pt-br)</span>
-                </label>
-                <input
-                  type="text"
-                  id="outLanguage"
-                  value={config.outLanguage}
-                  onChange={(e) => updateConfig('outLanguage', e.target.value)}
-                />
-              </div>
-
-              <div className="form-field">
-                <label htmlFor="version"><strong>Version:</strong></label>
-                <input
-                  type="text"
-                  id="version"
-                  value={config.version}
-                  onChange={(e) => updateConfig('version', e.target.value)}
-                />
-              </div>
-
-              <div className="form-field">
-                <label htmlFor="outputName"><strong>Nombre del archivo:</strong></label>
-                <input
-                  type="text"
-                  id="outputName"
-                  value={config.outputName}
-                  onChange={(e) => updateConfig('outputName', e.target.value)}
-                  required
-                />
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>Contenido Opcional</legend>
-
-              <div className="form-field">
-                <label htmlFor="coverImage"><strong>Imagen de portada:</strong></label>
-                <input
-                  type="file"
-                  id="coverImage"
-                  accept=".jpg,.jpeg,.png"
-                  onChange={(e) => updateConfig('coverImage', e.target.files?.[0] || null)}
-                />
-              </div>
-
-              <div className="form-field">
-                <label htmlFor="copyright"><strong>Texto de Copyright:</strong></label>
-                <textarea
-                  id="copyright"
-                  value={config.copyright}
-                  onChange={(e) => updateConfig('copyright', e.target.value)}
-                  rows={3}
-                />
-              </div>
-
-              <div className="form-field">
-                <label htmlFor="usage"><strong>Texto de Uso/Instrucciones:</strong></label>
-                <textarea
-                  id="usage"
-                  value={config.usage}
-                  onChange={(e) => updateConfig('usage', e.target.value)}
-                  rows={3}
-                />
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>Grupos de Definiciones</legend>
-
-              {config.definitionGroups.map((group, index) => (
-                <DefinitionGroup
-                  key={group.id}
-                  group={group}
-                  index={index}
-                  onChange={updateDefinitionGroup}
-                  onRemove={removeDefinitionGroup}
-                  canRemove={config.definitionGroups.length > 1}
-                />
-              ))}
-
-              <button type="button" className="add-group-btn" onClick={addDefinitionGroup}>
-                + Agregar Grupo
-              </button>
-            </fieldset>
-
-            <fieldset>
-              <legend>Estilos CSS Personalizados (opcional)</legend>
-              <textarea
-                id="customStyles"
-                value={config.customStyles}
-                onChange={(e) => updateConfig('customStyles', e.target.value)}
-                rows={3}
-                placeholder="/* Estilos CSS adicionales */"
-              />
-            </fieldset>
-
-            <button type="submit" className="submit-btn" disabled={isSubmitting}>
-              {isSubmitting ? 'Generando...' : 'Generar Diccionario'}
-            </button>
-          </form>
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto flex h-14 items-center justify-between px-4">
+          <h1 className="text-xl font-semibold">Kindle Dictionary Generator</h1>
+          <ThemeToggle />
         </div>
+      </header>
 
-        <KindlePreview entries={previewEntries} />
-      </div>
+      <main className="container mx-auto px-4 py-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_400px]">
+          <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Basic Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Dictionary Title *</Label>
+                      <Input
+                        id="title"
+                        value={config.title}
+                        onChange={(e) => updateConfig('title', e.target.value)}
+                        required
+                        placeholder="My Dictionary"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="creator">Creator/Author *</Label>
+                      <Input
+                        id="creator"
+                        value={config.creator}
+                        onChange={(e) => updateConfig('creator', e.target.value)}
+                        required
+                        placeholder="Author Name"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="inLanguage">
+                        Input Language
+                        <span className="ml-1 text-xs text-muted-foreground">(e.g., es-es, en-us)</span>
+                      </Label>
+                      <Input
+                        id="inLanguage"
+                        value={config.inLanguage}
+                        onChange={(e) => updateConfig('inLanguage', e.target.value)}
+                        placeholder="es-es"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="outLanguage">
+                        Output Language
+                        <span className="ml-1 text-xs text-muted-foreground">(e.g., es-es, en-us)</span>
+                      </Label>
+                      <Input
+                        id="outLanguage"
+                        value={config.outLanguage}
+                        onChange={(e) => updateConfig('outLanguage', e.target.value)}
+                        placeholder="es-es"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="version">Version</Label>
+                      <Input
+                        id="version"
+                        value={config.version}
+                        onChange={(e) => updateConfig('version', e.target.value)}
+                        placeholder="1.0"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="outputName">Output Filename *</Label>
+                      <Input
+                        id="outputName"
+                        value={config.outputName}
+                        onChange={(e) => updateConfig('outputName', e.target.value)}
+                        required
+                        placeholder="my-dictionary"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Optional Content</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="coverImage">Cover Image</Label>
+                    <Input
+                      type="file"
+                      id="coverImage"
+                      accept=".jpg,.jpeg,.png"
+                      onChange={(e) => updateConfig('coverImage', e.target.files?.[0] || null)}
+                      className="cursor-pointer"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="copyright">Copyright Text</Label>
+                    <Textarea
+                      id="copyright"
+                      value={config.copyright}
+                      onChange={(e) => updateConfig('copyright', e.target.value)}
+                      rows={2}
+                      placeholder="Copyright notice..."
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="usage">Usage/Instructions</Label>
+                    <Textarea
+                      id="usage"
+                      value={config.usage}
+                      onChange={(e) => updateConfig('usage', e.target.value)}
+                      rows={2}
+                      placeholder="How to use this dictionary..."
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                  <CardTitle>Definition Groups</CardTitle>
+                  <Button type="button" variant="outline" size="sm" onClick={addDefinitionGroup}>
+                    + Add Group
+                  </Button>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {config.definitionGroups.map((group, index) => (
+                    <DefinitionGroup
+                      key={group.id}
+                      group={group}
+                      index={index}
+                      onChange={updateDefinitionGroup}
+                      onRemove={removeDefinitionGroup}
+                      canRemove={config.definitionGroups.length > 1}
+                    />
+                  ))}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Custom CSS Styles (Optional)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    id="customStyles"
+                    value={config.customStyles}
+                    onChange={(e) => updateConfig('customStyles', e.target.value)}
+                    rows={3}
+                    placeholder="/* Additional CSS styles */"
+                    className="font-mono text-sm"
+                  />
+                </CardContent>
+              </Card>
+
+              <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? 'Generating...' : 'Generate Dictionary'}
+              </Button>
+            </form>
+          </div>
+
+          <KindlePreview entries={previewEntries} />
+        </div>
+      </main>
     </div>
   );
 }
