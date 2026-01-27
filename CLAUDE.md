@@ -1,0 +1,1 @@
+If no context available, read the README.md and the project files in order to understand the project objectives.

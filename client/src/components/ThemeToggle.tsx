@@ -1,24 +1,15 @@
-import { useState, useEffect } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { Button } from './ui/button';
+import { useThemeStore } from '../stores/themeStore';
 
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.remove('light');
-    } else {
-      root.classList.add('light');
-    }
-  }, [isDark]);
+  const { isDark, toggleDark } = useThemeStore();
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setIsDark(!isDark)}
+      onClick={toggleDark}
       className="h-9 w-9"
     >
       {isDark ? (

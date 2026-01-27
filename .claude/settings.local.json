@@ -10,7 +10,24 @@
       "Bash(git commit:*)",
       "Bash(npm install:*)",
       "Bash(python app.py:*)",
-      "Bash(python server/app.py:*)"
+      "Bash(python server/app.py:*)",
+      "WebFetch(domain:www.neobrutalism.dev)",
+      "Bash(pip install:*)",
+      "Bash(set:*)",
+      "Bash(flask db init:*)",
+      "Bash(python:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(npx tsc:*)",
+      "Bash(npm ls:*)",
+      "WebFetch(domain:neobrutalism.dev)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(gh api:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_press_key",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__plugin_playwright_playwright__browser_close",
+      "Bash(pnpm dlx:*)"
     ]
   }
 }
