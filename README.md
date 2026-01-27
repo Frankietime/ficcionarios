@@ -59,8 +59,7 @@ A web application for creating custom Kindle dictionaries. Build personalized di
 
 **Terminal 1 - Backend:**
 ```bash
-cd server
-python app.py
+python -m server.app.py
 ```
 
 **Terminal 2 - Frontend:**

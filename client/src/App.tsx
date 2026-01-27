@@ -248,17 +248,6 @@ function App() {
                       placeholder="Copyright notice..."
                     />
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="usage">Usage/Instructions</Label>
-                    <Textarea
-                      id="usage"
-                      value={config.usage}
-                      onChange={(e) => updateConfig('usage', e.target.value)}
-                      rows={2}
-                      placeholder="How to use this dictionary..."
-                    />
-                  </div>
                 </CardContent>
               </Card>
 

@@ -8,7 +8,9 @@
       "Bash(npm run build:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(python app.py:*)",
+      "Bash(python server/app.py:*)"
     ]
   }
 }

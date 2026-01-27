@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ficcionarios - Wireframes UX</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Courier New', monospace;
+      background: #f5f5f5;
+      padding: 40px;
+      line-height: 1.4;
+    }
+    
+    .wireframe-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      border-bottom: 4px solid #000;
+      padding-bottom: 16px;
+    }
+    
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 48px;
+    }
+    
+    .wireframe-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 64px;
+    }
+    
+    .wireframe-section {
+      background: #fff;
+      border: 3px solid #000;
+      padding: 24px;
+    }
+    
+    .wireframe-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px dashed #ccc;
+    }
+    
+    .wireframe-number {
+      background: #000;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    
+    .wireframe-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .wireframe-desc {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+    
+    .wireframe-canvas {
+      background: #fafafa;
+      border: 2px solid #ddd;
+      min-height: 500px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Wireframe Elements */
+    .wf-box {
+      border: 2px solid #000;
+      background: #fff;
+      position: absolute;
+    }
+    
+    .wf-box-dashed {
+      border: 2px dashed #999;
+      background: transparent;
+      position: absolute;
+    }
+    
+    .wf-text {
+      font-size: 11px;
+      padding: 8px;
+    }
+    
+    .wf-text-sm {
+      font-size: 9px;
+      padding: 4px 8px;
+    }
+    
+    .wf-button {
+      border: 2px solid #000;
+      background: #e0e0e0;
+      padding: 8px 16px;
+      font-size: 11px;
+      text-align: center;
+      display: inline-block;
+    }
+    
+    .wf-button-primary {
+      background: #333;
+      color: #fff;
+    }
+    
+    .wf-button-danger {
+      border-color: #c00;
+      color: #c00;
+    }
+    
+    .wf-input {
+      border: 2px solid #000;
+      background: #fff;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-size: 11px;
+      color: #999;
+    }
+    
+    .wf-label {
+      font-size: 10px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    
+    .wf-placeholder {
+      background: repeating-linear-gradient(
+        45deg,
+        #f0f0f0,
+        #f0f0f0 10px,
+        #e8e8e8 10px,
+        #e8e8e8 20px
+      );
+      border: 2px dashed #ccc;
+    }
+    
+    .wf-divider {
+      border-top: 1px solid #ddd;
+      position: absolute;
+      width: 100%;
+    }
+    
+    .wf-chip {
+      display: inline-block;
+      border: 2px solid #000;
+      padding: 4px 12px;
+      font-size: 10px;
+      margin: 2px;
+      background: #fff;
+    }
+    
+    .wf-chip-selected {
+      background: #333;
+      color: #fff;
+    }
+    
+    .wf-icon {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    
+    .wf-table-row {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      align-items: center;
+    }
+    
+    .wf-table-cell {
+      padding: 12px;
+      font-size: 11px;
+      border-right: 1px solid #eee;
+    }
+    
+    .wf-nav {
+      background: #fff;
+      border-bottom: 3px solid #000;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .wf-sidebar {
+      background: #fff;
+      border-right: 2px solid #000;
+    }
+    
+    .wf-accordion {
+      border: 2px solid #000;
+      margin-bottom: 8px;
+    }
+    
+    .wf-accordion-header {
+      background: #f5f5f5;
+      padding: 12px;
+      border-bottom: 2px solid #000;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .wf-accordion-content {
+      padding: 16px;
+    }
+    
+    .wf-radio {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #000;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    
+    .wf-radio-selected {
+      background: #000;
+      box-shadow: inset 0 0 0 3px #fff;
+    }
+    
+    .wf-toast {
+      background: #333;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 11px;
+      position: absolute;
+    }
+    
+    .wf-modal-overlay {
+      background: rgba(0,0,0,0.3);
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .wf-modal {
+      background: #fff;
+      border: 3px solid #000;
+      padding: 24px;
+      width: 400px;
+    }
+    
+    .wf-status {
+      font-size: 10px;
+      padding: 4px 8px;
+      border: 1px solid;
+    }
+    
+    .wf-status-success {
+      border-color: #090;
+      color: #090;
+    }
+    
+    .wf-status-warning {
+      border-color: #f90;
+      color: #f90;
+    }
+    
+    .wf-status-error {
+      border-color: #c00;
+      color: #c00;
+    }
+    
+    .annotations {
+      margin-top: 16px;
+      padding: 16px;
+      background: #fffde7;
+      border: 2px solid #ffc107;
+      font-size: 11px;
+    }
+    
+    .annotations h4 {
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .annotations ul {
+      margin-left: 20px;
+    }
+    
+    .annotations li {
+      margin-bottom: 4px;
+    }
+    
+    .flow-arrow {
+      font-size: 24px;
+      color: #666;
+      text-align: center;
+      padding: 8px;
+    }
+    
+    /* Responsive indicator */
+    .responsive-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .responsive-tab {
+      padding: 8px 16px;
+      border: 2px solid #000;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    
+    .responsive-tab.active {
+      background: #000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="wireframe-container">
+    <h1>FICCIONARIOS — Wireframes UX</h1>
+    <p class="subtitle">10 wireframes funcionales • Desktop First + Mobile Responsive • Sin estética, solo estructura UX</p>
+    
+    <div class="wireframe-grid">
+      
+      <!-- WIREFRAME 1: Login -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">01 — Login</div>
+            <div class="wireframe-desc">Autenticación simple: usuario + contraseña</div>
+          </div>
+          <div class="wireframe-number">01</div>
+        </div>
+        
+        <div class="responsive-tabs">
+          <div class="responsive-tab active">Desktop</div>
+          <div class="responsive-tab">Mobile</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 450px;">
+          <!-- Centered Card -->
+          <div class="wf-box" style="width: 380px; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 32px;">
+            <!-- Logo placeholder -->
+            <div class="wf-placeholder" style="width: 120px; height: 40px; margin: 0 auto 32px;"></div>
+            
+            <!-- Title -->
+            <div style="text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 8px;">Ficcionarios</div>
+            <div style="text-align: center; font-size: 11px; color: #666; margin-bottom: 32px;">Ingresá a tu cuenta</div>
+            
+            <!-- Form -->
+            <div style="margin-bottom: 16px;">
+              <div class="wf-label">Usuario</div>
+              <div class="wf-input" style="width: 100%;">usuario@email.com</div>
+            </div>
+            
+            <div style="margin-bottom: 24px;">
+              <div class="wf-label">Contraseña</div>
+              <div class="wf-input" style="width: 100%;">••••••••</div>
+            </div>
+            
+            <div class="wf-button wf-button-primary" style="width: 100%; padding: 12px;">INGRESAR</div>
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li>Card centrada vertical y horizontalmente</li>
+            <li>Validación inline en campos (borde rojo + mensaje)</li>
+            <li>Estado loading en botón al enviar</li>
+            <li>Mobile: card ocupa 100% width con padding lateral</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 2: Dashboard Empty State -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">02 — Dashboard: Empty State</div>
+            <div class="wireframe-desc">Estado inicial cuando el usuario no tiene ficcionarios</div>
+          </div>
+          <div class="wireframe-number">02</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 500px;">
+          <!-- Nav -->
+          <div class="wf-nav" style="position: absolute; top: 0; left: 0; right: 0;">
+            <div style="font-weight: bold; font-size: 14px;">FICCIONARIOS</div>
+            <div style="display: flex; gap: 16px; align-items: center;">
+              <span style="font-size: 11px;">usuario@email.com</span>
+              <div class="wf-button" style="padding: 6px 12px;">Salir</div>
+            </div>
+          </div>
+          
+          <!-- Empty State Card -->
+          <div class="wf-box" style="width: 480px; left: 50%; top: 55%; transform: translate(-50%, -50%); padding: 48px; text-align: center;">
+            <!-- Illustration placeholder -->
+            <div class="wf-placeholder" style="width: 120px; height: 100px; margin: 0 auto 24px;"></div>
+            
+            <div style="font-size: 20px; font-weight: bold; margin-bottom: 12px;">No tenés Ficcionarios todavía</div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 32px;">Creá tu primer ficcionario para empezar a definir términos de tus cuentos</div>
+            
+            <div class="wf-button wf-button-primary" style="padding: 14px 32px; font-size: 13px;">+ CREAR FICCIONARIO</div>
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li>Card grande centrada con ilustración placeholder</li>
+            <li>CTA prominente y único punto de acción</li>
+            <li>Mensaje claro que explica qué es un ficcionario</li>
+            <li>Mobile: card full-width con menos padding</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 3: Dashboard con Ficcionarios -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">03 — Dashboard: Lista de Ficcionarios</div>
+            <div class="wireframe-desc">Tabla con ficcionarios existentes y acciones por fila</div>
+          </div>
+          <div class="wireframe-number">03</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 550px;">
+          <!-- Nav -->
+          <div class="wf-nav" style="position: absolute; top: 0; left: 0; right: 0;">
+            <div style="font-weight: bold; font-size: 14px;">FICCIONARIOS</div>
+            <div style="display: flex; gap: 16px; align-items: center;">
+              <span style="font-size: 11px;">usuario@email.com</span>
+              <div class="wf-button" style="padding: 6px 12px;">Salir</div>
+            </div>
+          </div>
+          
+          <!-- Content area -->
+          <div style="position: absolute; top: 70px; left: 40px; right: 40px; bottom: 40px;">
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+              <div style="font-size: 24px; font-weight: bold;">Mis Ficcionarios</div>
+              <div class="wf-button wf-button-primary" style="padding: 10px 20px;">+ NUEVO FICCIONARIO</div>
+            </div>
+            
+            <!-- Table -->
+            <div class="wf-box" style="position: relative; width: 100%;">
+              <!-- Header row -->
+              <div class="wf-table-row" style="background: #f5f5f5; font-weight: bold;">
+                <div class="wf-table-cell" style="flex: 2;">Nombre</div>
+                <div class="wf-table-cell" style="flex: 1;">Cuentos</div>
+                <div class="wf-table-cell" style="flex: 1;">Creado por</div>
+                <div class="wf-table-cell" style="flex: 1;">Última edición</div>
+                <div class="wf-table-cell" style="flex: 1.5; text-align: right;">Acciones</div>
+              </div>
+              
+              <!-- Row 1 -->
+              <div class="wf-table-row">
+                <div class="wf-table-cell" style="flex: 2; font-weight: bold;">Diccionario Fantasía Vol.1</div>
+                <div class="wf-table-cell" style="flex: 1;">
+                  <span style="text-decoration: underline; cursor: pointer;">3 cuentos</span>
+                  <span style="font-size: 9px; color: #999;"> ⓘ</span>
+                </div>
+                <div class="wf-table-cell" style="flex: 1;">Juan P.</div>
+                <div class="wf-table-cell" style="flex: 1;">
+                  <div>hace 2 horas</div>
+                  <div style="font-size: 9px; color: #666;">por María G.</div>
+                </div>
+                <div class="wf-table-cell" style="flex: 1.5; text-align: right;">
+                  <span class="wf-button" style="padding: 4px 10px; margin-right: 4px;">✎</span>
+                  <span class="wf-button" style="padding: 4px 10px; margin-right: 4px;">⬇</span>
+                  <span class="wf-button wf-button-danger" style="padding: 4px 10px;">🗑</span>
+                </div>
+              </div>
+              
+              <!-- Row 2 -->
+              <div class="wf-table-row">
+                <div class="wf-table-cell" style="flex: 2; font-weight: bold;">Glosario Sci-Fi</div>
+                <div class="wf-table-cell" style="flex: 1;">
+                  <span style="text-decoration: underline; cursor: pointer;">7 cuentos</span>
+                  <span style="font-size: 9px; color: #999;"> ⓘ</span>
+                </div>
+                <div class="wf-table-cell" style="flex: 1;">María G.</div>
+                <div class="wf-table-cell" style="flex: 1;">
+                  <div>ayer</div>
+                  <div style="font-size: 9px; color: #666;">por Juan P.</div>
+                </div>
+                <div class="wf-table-cell" style="flex: 1.5; text-align: right;">
+                  <span class="wf-button" style="padding: 4px 10px; margin-right: 4px;">✎</span>
+                  <span class="wf-button" style="padding: 4px 10px; margin-right: 4px;">⬇</span>
+                  <span class="wf-button wf-button-danger" style="padding: 4px 10px;">🗑</span>
+                </div>
+              </div>
+              
+              <!-- Row 3 -->
+              <div class="wf-table-row" style="border-bottom: none;">
+                <div class="wf-table-cell" style="flex: 2; font-weight: bold;">Terror Gótico</div>
+                <div class="wf-table-cell" style="flex: 1;">
+                  <span style="text-decoration: underline; cursor: pointer;">2 cuentos</span>
+                  <span style="font-size: 9px; color: #999;"> ⓘ</span>
+                </div>
+                <div class="wf-table-cell" style="flex: 1;">Juan P.</div>
+                <div class="wf-table-cell" style="flex: 1;">
+                  <div>hace 5 días</div>
+                  <div style="font-size: 9px; color: #666;">por Juan P.</div>
+                </div>
+                <div class="wf-table-cell" style="flex: 1.5; text-align: right;">
+                  <span class="wf-button" style="padding: 4px 10px; margin-right: 4px;">✎</span>
+                  <span class="wf-button" style="padding: 4px 10px; margin-right: 4px;">⬇</span>
+                  <span class="wf-button wf-button-danger" style="padding: 4px 10px;">🗑</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li><strong>Cuentos:</strong> número clickeable muestra tooltip con lista de nombres</li>
+            <li><strong>Última edición:</strong> formato relativo + quién editó (updatedBy)</li>
+            <li><strong>Acciones:</strong> Editar (→ editor), Generar Dict (⬇), Borrar (confirmación modal)</li>
+            <li><strong>Mobile:</strong> cards en lugar de tabla, acciones en menú contextual (⋮)</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 4: Tooltip de Cuentos -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">04 — Dashboard: Tooltip de Cuentos</div>
+            <div class="wireframe-desc">Detalle de cuentos al hover sobre el contador</div>
+          </div>
+          <div class="wireframe-number">04</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 300px;">
+          <!-- Partial table row -->
+          <div class="wf-box" style="position: absolute; top: 80px; left: 60px; right: 60px;">
+            <div class="wf-table-row" style="border-bottom: none;">
+              <div class="wf-table-cell" style="flex: 2; font-weight: bold;">Diccionario Fantasía Vol.1</div>
+              <div class="wf-table-cell" style="flex: 1; position: relative;">
+                <span style="text-decoration: underline; cursor: pointer; background: #ff0;">3 cuentos</span>
+                
+                <!-- Tooltip -->
+                <div class="wf-box" style="position: absolute; top: 30px; left: 0; width: 220px; padding: 12px; z-index: 10; box-shadow: 4px 4px 0 rgba(0,0,0,0.2);">
+                  <div style="font-size: 10px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; color: #666;">Cuentos incluidos:</div>
+                  <div style="font-size: 11px; margin-bottom: 4px;">• El Reino Olvidado</div>
+                  <div style="font-size: 11px; margin-bottom: 4px;">• La Espada de Cristal</div>
+                  <div style="font-size: 11px;">• Sombras del Pasado</div>
+                </div>
+              </div>
+              <div class="wf-table-cell" style="flex: 1;">Juan P.</div>
+              <div class="wf-table-cell" style="flex: 1;">hace 2 horas</div>
+              <div class="wf-table-cell" style="flex: 1.5;"></div>
+            </div>
+          </div>
+          
+          <div style="position: absolute; bottom: 40px; left: 60px; font-size: 11px; color: #666;">
+            ↑ Hover sobre "3 cuentos" activa el tooltip
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li>Tooltip aparece al hover (desktop) o tap (mobile)</li>
+            <li>Lista completa de nombres de cuentos</li>
+            <li>Shadow para elevar visualmente sobre la tabla</li>
+            <li>Se cierra al mover el mouse fuera o tap en otro lugar</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 5: Modal de Confirmación Borrar -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">05 — Modal: Confirmar Borrado</div>
+            <div class="wireframe-desc">Confirmación antes de eliminar un ficcionario</div>
+          </div>
+          <div class="wireframe-number">05</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 400px;">
+          <!-- Dimmed background representation -->
+          <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4);">
+            <!-- Modal -->
+            <div class="wf-box" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 420px; padding: 32px; background: #fff;">
+              <div style="font-size: 18px; font-weight: bold; margin-bottom: 16px;">¿Eliminar ficcionario?</div>
+              <div style="font-size: 12px; color: #666; margin-bottom: 8px;">
+                Estás por eliminar:
+              </div>
+              <div style="font-size: 14px; font-weight: bold; margin-bottom: 16px; padding: 12px; background: #f5f5f5; border: 1px solid #ddd;">
+                "Diccionario Fantasía Vol.1"
+              </div>
+              <div style="font-size: 11px; color: #c00; margin-bottom: 24px;">
+                ⚠ Esta acción no se puede deshacer
+              </div>
+              
+              <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                <div class="wf-button" style="padding: 10px 24px;">Cancelar</div>
+                <div class="wf-button" style="padding: 10px 24px; background: #c00; color: #fff; border-color: #c00;">Eliminar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li>Overlay oscuro bloquea interacción con el fondo</li>
+            <li>Nombre del ficcionario visible para evitar errores</li>
+            <li>Botón destructivo en rojo, a la derecha</li>
+            <li>ESC o click fuera cierra el modal (cancela)</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 6: Editor - Info General -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">06 — Editor: Información General</div>
+            <div class="wireframe-desc">Formulario de datos generales del ficcionario (campos required marcados)</div>
+          </div>
+          <div class="wireframe-number">06</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 650px;">
+          <!-- Sticky Header -->
+          <div style="position: absolute; top: 0; left: 0; right: 0; background: #fff; border-bottom: 3px solid #000; padding: 16px 32px; z-index: 10;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <div style="font-size: 20px; font-weight: bold;">Diccionario Fantasía Vol.1</div>
+                <div style="font-size: 11px; color: #666;">v1.0 — Borrador</div>
+              </div>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <span class="wf-status wf-status-warning">Unsaved changes</span>
+                <div class="wf-button wf-button-primary" style="padding: 8px 20px;">GUARDAR</div>
+                <div class="wf-button" style="padding: 8px 20px; opacity: 0.5;">GENERAR DICT</div>
+                <div class="wf-button wf-button-danger" style="padding: 8px 16px;">🗑</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div style="position: absolute; top: 90px; left: 0; right: 0; bottom: 0; overflow-y: auto; padding: 32px;">
+            <!-- Section: Info General -->
+            <div style="max-width: 800px; margin: 0 auto;">
+              <div style="font-size: 16px; font-weight: bold; margin-bottom: 24px; padding-bottom: 8px; border-bottom: 2px solid #000;">
+                Información General
+              </div>
+              
+              <!-- Two column grid -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px;">
+                <!-- Título -->
+                <div>
+                  <div class="wf-label">Título del Ficcionario *</div>
+                  <div class="wf-input" style="width: 100%;">Diccionario Fantasía Vol.1</div>
+                </div>
+                
+                <!-- Version/Subtitle -->
+                <div>
+                  <div class="wf-label">Versión / Subtítulo</div>
+                  <div class="wf-input" style="width: 100%;">Primera edición</div>
+                </div>
+                
+                <!-- Autor -->
+                <div>
+                  <div class="wf-label">Autor/es del diccionario *</div>
+                  <div class="wf-input" style="width: 100%;">Juan Pérez, María García</div>
+                </div>
+                
+                <!-- Output filename -->
+                <div>
+                  <div class="wf-label">Nombre archivo de salida *</div>
+                  <div class="wf-input" style="width: 100%;">diccionario_fantasia_v1</div>
+                </div>
+                
+                <!-- Input Language -->
+                <div>
+                  <div class="wf-label">Idioma de entrada *</div>
+                  <div class="wf-input" style="width: 100%; justify-content: space-between;">
+                    Español
+                    <span>▼</span>
+                  </div>
+                </div>
+                
+                <!-- Output Language -->
+                <div>
+                  <div class="wf-label">Idioma de salida *</div>
+                  <div class="wf-input" style="width: 100%; justify-content: space-between;">
+                    Español
+                    <span>▼</span>
+                  </div>
+                </div>
+                
+                <!-- Version number -->
+                <div>
+                  <div class="wf-label">Número de versión</div>
+                  <div class="wf-input" style="width: 100%;">1.0</div>
+                </div>
+                
+                <!-- Copyright -->
+                <div>
+                  <div class="wf-label">Copyright</div>
+                  <div class="wf-input" style="width: 100%;">© 2024 Juan Pérez</div>
+                </div>
+                
+                <!-- Cover image - full width -->
+                <div style="grid-column: 1 / -1;">
+                  <div class="wf-label">Imagen de portada</div>
+                  <div class="wf-box-dashed" style="position: relative; width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px;">
+                    <div style="font-size: 24px;">📷</div>
+                    <div style="font-size: 11px; color: #666;">Arrastrá una imagen o hacé click para subir</div>
+                    <div style="font-size: 9px; color: #999;">PNG, JPG hasta 2MB</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li><strong>Header sticky:</strong> siempre visible con título, estado de guardado y acciones</li>
+            <li><strong>Estados de guardado:</strong> "Saved ✓" (verde), "Saving…" (gris), "Unsaved changes" (amarillo)</li>
+            <li><strong>Generar Dict:</strong> deshabilitado hasta completar required + 1 fichero válido</li>
+            <li><strong>Campos required:</strong> marcados con * — validación inline</li>
+            <li><strong>Mobile:</strong> campos en una columna, header colapsado</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 7: Editor - Ficheros Expandidos -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">07 — Editor: Lista de Ficheros (Accordion)</div>
+            <div class="wireframe-desc">Ficheros expandidos mostrando términos y biblioteca</div>
+          </div>
+          <div class="wireframe-number">07</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 700px;">
+          <!-- Sticky Header (simplified) -->
+          <div style="position: absolute; top: 0; left: 0; right: 0; background: #fff; border-bottom: 3px solid #000; padding: 16px 32px; z-index: 10;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-size: 20px; font-weight: bold;">Diccionario Fantasía Vol.1</div>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <span class="wf-status wf-status-success">Saved ✓</span>
+                <div class="wf-button wf-button-primary" style="padding: 8px 20px;">GUARDAR</div>
+                <div class="wf-button wf-button-primary" style="padding: 8px 20px;">GENERAR DICT</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div style="position: absolute; top: 80px; left: 0; right: 0; bottom: 0; overflow-y: auto; padding: 32px;">
+            <div style="max-width: 1000px; margin: 0 auto;">
+              <!-- Section Header -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <div style="font-size: 16px; font-weight: bold;">Ficheros</div>
+                <div style="display: flex; gap: 8px;">
+                  <div class="wf-button" style="padding: 6px 12px; font-size: 10px;">COLAPSAR TODO</div>
+                  <div class="wf-button wf-button-primary" style="padding: 6px 12px; font-size: 10px;">+ NUEVO FICHERO</div>
+                </div>
+              </div>
+              
+              <!-- Accordion Item 1 - Expanded -->
+              <div class="wf-accordion">
+                <div class="wf-accordion-header">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span>▼</span>
+                    <span>Fichero 1</span>
+                    <span style="font-size: 10px; color: #666; font-weight: normal;">(magia, hechizo, portal...)</span>
+                  </div>
+                  <div class="wf-button wf-button-danger" style="padding: 4px 10px; font-size: 10px;">🗑</div>
+                </div>
+                <div class="wf-accordion-content">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <!-- Términos Column -->
+                    <div>
+                      <div class="wf-label" style="margin-bottom: 12px;">Términos</div>
+                      
+                      <!-- Add term input -->
+                      <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                        <div class="wf-input" style="flex: 1;">Agregar término...</div>
+                        <div class="wf-button" style="padding: 8px 16px;">+</div>
+                      </div>
+                      
+                      <!-- Chips -->
+                      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <div class="wf-chip">magia <span style="margin-left: 8px; cursor: pointer;">×</span></div>
+                        <div class="wf-chip">hechizo <span style="margin-left: 8px; cursor: pointer;">×</span></div>
+                        <div class="wf-chip">portal <span style="margin-left: 8px; cursor: pointer;">×</span></div>
+                        <div class="wf-chip">encantamiento <span style="margin-left: 8px; cursor: pointer;">×</span></div>
+                        <div class="wf-chip">grimorio <span style="margin-left: 8px; cursor: pointer;">×</span></div>
+                      </div>
+                    </div>
+                    
+                    <!-- Biblioteca Column -->
+                    <div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div class="wf-label" style="margin: 0;">Biblioteca</div>
+                        <div class="wf-button" style="padding: 4px 12px; font-size: 10px;">📤 SUBIR CUENTO</div>
+                      </div>
+                      
+                      <!-- Search -->
+                      <div class="wf-input" style="width: 100%; margin-bottom: 12px;">
+                        🔍 Buscar cuentos...
+                      </div>
+                      
+                      <!-- Selected story pill -->
+                      <div style="margin-bottom: 12px;">
+                        <div style="font-size: 10px; color: #666; margin-bottom: 4px;">Seleccionado:</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                          <div class="wf-chip wf-chip-selected">El Reino Olvidado</div>
+                          <span style="font-size: 10px; text-decoration: underline; cursor: pointer;">cambiar</span>
+                        </div>
+                      </div>
+                      
+                      <!-- Story list (single select) -->
+                      <div class="wf-box" style="position: relative; max-height: 150px; overflow-y: auto;">
+                        <div style="padding: 10px 12px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px; background: #f5f5f5;">
+                          <div class="wf-radio wf-radio-selected"></div>
+                          <span style="font-size: 11px;">El Reino Olvidado</span>
+                        </div>
+                        <div style="padding: 10px 12px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px;">
+                          <div class="wf-radio"></div>
+                          <span style="font-size: 11px;">La Espada de Cristal</span>
+                        </div>
+                        <div style="padding: 10px 12px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px;">
+                          <div class="wf-radio"></div>
+                          <span style="font-size: 11px;">Sombras del Pasado</span>
+                        </div>
+                        <div style="padding: 10px 12px; display: flex; align-items: center; gap: 10px;">
+                          <div class="wf-radio"></div>
+                          <span style="font-size: 11px;">El Bosque Encantado</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Accordion Item 2 - Collapsed -->
+              <div class="wf-accordion">
+                <div class="wf-accordion-header">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span>▶</span>
+                    <span>Fichero 2</span>
+                    <span style="font-size: 10px; color: #666; font-weight: normal; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">(espada, armadura, escudo, caballero, dragón...)</span>
+                  </div>
+                  <div class="wf-button wf-button-danger" style="padding: 4px 10px; font-size: 10px;">🗑</div>
+                </div>
+              </div>
+              
+              <!-- Accordion Item 3 - Collapsed, incomplete -->
+              <div class="wf-accordion" style="border-color: #f90;">
+                <div class="wf-accordion-header" style="background: #fff8e1;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span>▶</span>
+                    <span>Fichero 3</span>
+                    <span class="wf-status wf-status-warning" style="font-size: 9px;">Incompleto</span>
+                  </div>
+                  <div class="wf-button wf-button-danger" style="padding: 4px 10px; font-size: 10px;">🗑</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li><strong>Header colapsado:</strong> muestra términos con ellipsis + tooltip</li>
+            <li><strong>Términos:</strong> input + enter crea chip, chips tienen X para borrar</li>
+            <li><strong>Biblioteca:</strong> single-select con radio buttons, búsqueda filtrable</li>
+            <li><strong>Cuento seleccionado:</strong> se muestra como pill arriba de la lista</li>
+            <li><strong>Fichero incompleto:</strong> borde naranja + badge "Incompleto"</li>
+            <li><strong>Mobile:</strong> términos y biblioteca en stack vertical</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 8: Modal Upload Cuento + Duplicado -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">08 — Modal: Subir Cuento + Detección de Duplicado</div>
+            <div class="wireframe-desc">Upload de archivo con validación de contenido duplicado</div>
+          </div>
+          <div class="wireframe-number">08</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 500px;">
+          <!-- Modal Overlay -->
+          <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4);">
+            <!-- Modal -->
+            <div class="wf-box" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; padding: 32px; background: #fff;">
+              <div style="font-size: 18px; font-weight: bold; margin-bottom: 24px;">Subir cuento</div>
+              
+              <!-- Upload area -->
+              <div class="wf-box-dashed" style="position: relative; width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; margin-bottom: 20px;">
+                <div style="font-size: 24px;">📄</div>
+                <div style="font-size: 11px; color: #666;">Arrastrá un archivo o hacé click</div>
+                <div style="font-size: 9px; color: #999;">.txt, .doc, .docx</div>
+              </div>
+              
+              <!-- Duplicate warning -->
+              <div style="background: #fff8e1; border: 2px solid #f90; padding: 16px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: flex-start; gap: 12px;">
+                  <span style="font-size: 20px;">⚠️</span>
+                  <div>
+                    <div style="font-size: 12px; font-weight: bold; margin-bottom: 4px;">Este cuento ya existe</div>
+                    <div style="font-size: 11px; color: #666; margin-bottom: 12px;">
+                      El contenido coincide con <strong>"El Reino Olvidado"</strong> ya guardado en la biblioteca.
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                      <div class="wf-button wf-button-primary" style="padding: 6px 14px; font-size: 10px;">USAR EXISTENTE</div>
+                      <div class="wf-button" style="padding: 6px 14px; font-size: 10px;">SUBIR IGUAL</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Footer -->
+              <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                <div class="wf-button" style="padding: 10px 24px;">Cancelar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li><strong>Detección:</strong> basada en hash(content) del archivo</li>
+            <li><strong>No bloquea:</strong> permite usar existente O subir de nuevo</li>
+            <li><strong>"Usar existente":</strong> selecciona el cuento ya guardado</li>
+            <li><strong>"Subir igual":</strong> crea copia (para casos edge)</li>
+            <li><strong>Si no hay duplicado:</strong> el cuento se sube directamente</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 9: Toast de Error al Guardar -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">09 — Toast: Error al Guardar</div>
+            <div class="wireframe-desc">Notificación de error cuando falla el guardado</div>
+          </div>
+          <div class="wireframe-number">09</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 350px;">
+          <!-- Page representation -->
+          <div style="position: absolute; top: 0; left: 0; right: 0; background: #fff; border-bottom: 3px solid #000; padding: 16px 32px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-size: 20px; font-weight: bold;">Diccionario Fantasía Vol.1</div>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <span class="wf-status wf-status-error">Error al guardar</span>
+                <div class="wf-button wf-button-primary" style="padding: 8px 20px;">REINTENTAR</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Toast -->
+          <div class="wf-box" style="position: absolute; bottom: 32px; right: 32px; width: 360px; background: #c00; color: #fff; padding: 0; overflow: hidden;">
+            <div style="padding: 16px 20px; display: flex; align-items: flex-start; gap: 12px;">
+              <span style="font-size: 18px;">✕</span>
+              <div>
+                <div style="font-weight: bold; margin-bottom: 4px;">Error al guardar</div>
+                <div style="font-size: 11px; opacity: 0.9;">No se pudo conectar con el servidor. Revisá tu conexión e intentá de nuevo.</div>
+              </div>
+              <span style="margin-left: auto; cursor: pointer; opacity: 0.7;">✕</span>
+            </div>
+            <div style="height: 4px; background: rgba(255,255,255,0.3);">
+              <div style="height: 100%; width: 60%; background: #fff;"></div>
+            </div>
+          </div>
+          
+          <div style="position: absolute; bottom: 150px; right: 32px; font-size: 10px; color: #666; text-align: right;">
+            ↑ Toast aparece desde abajo<br>
+            Auto-dismiss en 5s o click en ✕
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li><strong>Posición:</strong> bottom-right, no bloquea la UI</li>
+            <li><strong>Progress bar:</strong> indica tiempo restante antes de auto-cerrar</li>
+            <li><strong>Acciones:</strong> botón "Reintentar" en el header, ✕ para cerrar toast</li>
+            <li><strong>Estados header:</strong> cambia de "Saved ✓" a "Error al guardar" + botón reintentar</li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- WIREFRAME 10: Generación de Diccionario -->
+      <section class="wireframe-section">
+        <div class="wireframe-header">
+          <div>
+            <div class="wireframe-title">10 — Modal: Generando Diccionario</div>
+            <div class="wireframe-desc">Progreso de generación y descarga del archivo final</div>
+          </div>
+          <div class="wireframe-number">10</div>
+        </div>
+        
+        <div class="wireframe-canvas" style="min-height: 450px;">
+          <!-- Modal Overlay -->
+          <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4);">
+            <!-- Modal - Generating -->
+            <div class="wf-box" style="position: absolute; top: 40%; left: 30%; transform: translate(-50%, -50%); width: 400px; padding: 32px; background: #fff;">
+              <div style="text-align: center;">
+                <div style="font-size: 40px; margin-bottom: 16px;">⚙️</div>
+                <div style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">Generando diccionario...</div>
+                <div style="font-size: 12px; color: #666; margin-bottom: 24px;">Esto puede tomar unos segundos</div>
+                
+                <!-- Progress bar -->
+                <div style="background: #eee; height: 8px; border: 2px solid #000; margin-bottom: 16px;">
+                  <div style="background: #000; height: 100%; width: 65%;"></div>
+                </div>
+                <div style="font-size: 11px; color: #666;">Procesando fichero 2 de 3...</div>
+              </div>
+            </div>
+            
+            <!-- Modal - Complete -->
+            <div class="wf-box" style="position: absolute; top: 40%; left: 70%; transform: translate(-50%, -50%); width: 400px; padding: 32px; background: #fff;">
+              <div style="text-align: center;">
+                <div style="font-size: 40px; margin-bottom: 16px;">✅</div>
+                <div style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">¡Diccionario generado!</div>
+                <div style="font-size: 12px; color: #666; margin-bottom: 24px;">Tu archivo está listo para descargar</div>
+                
+                <!-- File info -->
+                <div style="background: #f5f5f5; border: 2px solid #000; padding: 16px; margin-bottom: 24px; text-align: left;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 24px;">📘</span>
+                    <div>
+                      <div style="font-weight: bold; font-size: 12px;">diccionario_fantasia_v1.mobi</div>
+                      <div style="font-size: 10px; color: #666;">245 KB • 3 ficheros • 47 términos</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="wf-button wf-button-primary" style="padding: 12px 32px; width: 100%;">⬇ DESCARGAR</div>
+                <div style="margin-top: 12px;">
+                  <span style="font-size: 11px; color: #666; text-decoration: underline; cursor: pointer;">Cerrar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #666;">
+            ← Estado: Generando &nbsp;&nbsp;|&nbsp;&nbsp; Estado: Completado →
+          </div>
+        </div>
+        
+        <div class="annotations">
+          <h4>📝 Notas UX</h4>
+          <ul>
+            <li><strong>No se puede cerrar:</strong> mientras genera, el modal bloquea interacción</li>
+            <li><strong>Progress:</strong> muestra fichero actual siendo procesado</li>
+            <li><strong>Completado:</strong> muestra info del archivo (nombre, peso, stats)</li>
+            <li><strong>Descarga:</strong> inicia descarga del .mobi automáticamente o con click</li>
+            <li><strong>Validación previa:</strong> solo se habilita si info required + 1 fichero completo</li>
+          </ul>
+        </div>
+      </section>
+      
+    </div>
+    
+    <!-- User Flow Summary -->
+    <section class="wireframe-section" style="margin-top: 64px; background: #e8f5e9;">
+      <div class="wireframe-header">
+        <div>
+          <div class="wireframe-title">📋 User Story Principal</div>
+          <div class="wireframe-desc">Flujo completo desde login hasta generación de diccionario</div>
+        </div>
+      </div>
+      
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 24px;">
+        <div class="wf-button" style="background: #fff;">01. Login</div>
+        <div class="flow-arrow">→</div>
+        <div class="wf-button" style="background: #fff;">02/03. Dashboard</div>
+        <div class="flow-arrow">→</div>
+        <div class="wf-button" style="background: #fff;">06. Info General</div>
+        <div class="flow-arrow">→</div>
+        <div class="wf-button" style="background: #fff;">07. + Nuevo Fichero</div>
+        <div class="flow-arrow">→</div>
+        <div class="wf-button" style="background: #fff;">07. Términos + 08. Biblioteca</div>
+        <div class="flow-arrow">→</div>
+        <div class="wf-button" style="background: #fff;">10. Generar Dict</div>
+      </div>
+      
+      <div style="padding: 0 24px 24px; font-size: 12px; color: #666;">
+        <strong>Validaciones en el flujo:</strong>
+        <ul style="margin-top: 8px; margin-left: 20px;">
+          <li>Fichero válido = ≥1 término + 1 cuento seleccionado</li>
+          <li>No duplicar términos entre ficheros distintos (warning)</li>
+          <li>No duplicar cuentos en BD (detectar por hash, ofrecer usar existente)</li>
+          <li>Info required completa + al menos 1 fichero válido = habilita "Generar Dict"</li>
+        </ul>
+      </div>
+    </section>
+    
+  </div>
+</body>
+</html>
