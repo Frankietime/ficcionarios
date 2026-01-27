@@ -152,10 +152,10 @@ def generate_usage_html(title, creator, usage_text):
     title_escaped = escape_html(title)
     creator_escaped = escape_html(creator)
 
-    if not usage_text.strip():
-        usage_text = f'Este diccionario contiene términos específicos para su uso con libros relacionados.<br/>Para usarlo, selecciónalo como diccionario predeterminado en la configuración de tu Kindle.'
-    else:
+    if usage_text.strip():
         usage_text = escape_html(usage_text).replace('\n', '<br/>')
+    else:
+        usage_text = f''
 
     return f'''<html>
   <head>
