@@ -27,7 +27,16 @@
       "mcp__plugin_playwright_playwright__browser_press_key",
       "mcp__plugin_playwright_playwright__browser_evaluate",
       "mcp__plugin_playwright_playwright__browser_close",
-      "Bash(pnpm dlx:*)"
+      "Bash(pnpm dlx:*)",
+      "Bash(ls -la \"C:\\\\Users\\\\donad\\\\repos\\\\ficcionarios\\\\server\"\" | grep -E \"^d)",
+      "Bash(__init__)",
+      "Bash(migrations \")",
+      "Bash(ren C:Usersdonadreposficcionariosficcionarios.db ficcionarios.db.bak)",
+      "Bash(where:*)",
+      "Bash(psql:*)",
+      "Bash(\"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" \"postgresql://postgres:postgres@localhost:5432/postgres\" -c \"CREATE DATABASE ficcionarios;\")",
+      "Bash(\"C:\\\\Program Files\\\\PostgreSQL\\\\18\\\\bin\\\\psql.exe\" \"postgresql://postgres:chicle@localhost:5432/postgres\" -c \"CREATE DATABASE ficcionarios;\")",
+      "Bash(git rm:*)"
     ]
   }
 }
